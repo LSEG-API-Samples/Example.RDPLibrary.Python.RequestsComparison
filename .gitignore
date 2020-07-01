@@ -1,0 +1,5 @@
+.vscode/
+documents/
+internal_dev/
+rdp_requests/
+src/__pycache__
