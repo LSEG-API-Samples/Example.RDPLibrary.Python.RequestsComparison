@@ -1,4 +1,4 @@
-# RDP Libraries for Python VS Python/requests direct call for Refinitiv Data Platform
+# Comparison of RDP Libraries for Python VS Python/requests direct call for Refinitiv Data Platform
 - version: 1.0
 - Last update: July 2020
 - Environment: Windows
@@ -370,6 +370,8 @@ This demo project requires the following dependencies softwares and libraries.
 2. [Python](https://www.python.org/) compiler and runtime.
 3. [Refinitiv Data Platform Libraries for Python](https://pypi.org/project/refinitiv-dataplatform/) library.
 4. Internet connection
+
+Please contact your Refinitiv's representative to help you to access Refinitiv Data Platform credentials.
 
 *Note:* 
 - The Python example has been qualified with Python versions 3.7.7. 
