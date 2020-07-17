@@ -1,18 +1,28 @@
-'''
-Both RDP APIs and RDP Library require the same RDP access credential, the username, password and App Key (client id).
-'''
+# |-----------------------------------------------------------------------------
+# |            This source code is provided under the Apache 2.0 license      --
+# |  and is provided AS IS with no warranty or guarantee of fit for purpose.  --
+# |                See the project's LICENSE.md for details.                  --
+# |           Copyright Refinitiv 2020. All rights reserved.                  --
+# |-----------------------------------------------------------------------------
 
+# |-----------------------------------------------------------------------------
+# |   Refinitiv Data Platform APIs direct call vs RDP ease-of-use libraries   --
+# |-----------------------------------------------------------------------------
+
+'''
+Both RDP APIs and RDP Libraries require the same RDP access credentials which are the username, password and App Key (client id).
+'''
 
 import json
+from datetime import datetime, timedelta
+from dateutil import tz
 
 APP_KEY = ''
 RDP_LOGIN = ''
 RDP_PASSWORD = ''
-universe = ['GBP=','JPY=']
-fields   = ['BID','ASK']
-
 
 # --------------------------- RDP Library -------------------------------------------
+
 import refinitiv.dataplatform as rdp
 
 # -- Init and Authenticate Session
@@ -24,16 +34,26 @@ session = rdp.open_platform_session(
     )
 )
 
-# ------------ Pricing Data Request
+# ------------ Historical Pricing Data Request
 
-response = rdp.get_snapshot( universe = universe, fields   = fields)
+# Request retrieve time series pricing events of yesterday for 15 rows of data.
+
+response = rdp.get_historical_price_events(
+    universe = 'EUR=', 
+    start = timedelta(-1),  #example value 2020-07-13T08:54:53.619177000Z
+    count = 15,
+    adjustments = [
+        rdp.Adjustments.EXCHANGE_CORRECTION,
+        rdp.Adjustments.MANUAL_CORRECTION
+    ]
+)
+
+
 
 print('This is a Pricing result from RDP library')
 print(response)
 print('By default, the RDP library Function Layer always returns data in DataFrame format')
 print(type(response))
-print('Application can use Dataframe.to_json function to convert Dataframe to JSON')
-print(response.to_json())
 
 
 # --------------------------- RDP API Direct Call -------------------------------------
@@ -46,9 +66,9 @@ client_secret = ''
 RDP_version = "/v1"
 base_URL = "https://api.refinitiv.com"
 category_URL = "/auth/oauth2"
-endpoint_URL = "/token"
+service_endpoint_URL = "/token"
 
-auth_endpoint = base_URL + category_URL + RDP_version + endpoint_URL
+auth_endpoint = base_URL + category_URL + RDP_version + service_endpoint_URL 
 
 auth_obj = None
 response = None
@@ -74,26 +94,34 @@ else:
     print('RDP authentication result failure: %s %s' % (response.status_code, response.reason))
     print('Text: %s' % (response.text))
 
-# ------------ Pricing Data Request
 
-category_URL = '/data/pricing'
-endpoint_URL = '/snapshots'
-RDP_version = '/beta3'
-pricing_url = base_URL + category_URL + RDP_version + endpoint_URL 
+# ------------ Historical Pricing
 
-payload = {'universe': ','.join(universe), 'fields': ','.join(fields)}
+
+category_URL = '/data/historical-pricing'
+service_endpoint_URL = '/views/events'
+
+historical_pricing_url = base_URL + category_URL + RDP_version + service_endpoint_URL + '/EUR=' #https://api.refinitiv.com/data/historical-pricing/v1/views/events/EUR=
+
+# Set start date and timestamp to be yesterday in UTC timezoe and in ISO8601 format
+start = (datetime.now() + timedelta(-1)).astimezone(tz.gettz('UTC')).replace(tzinfo=None)
+start_iso = start.isoformat(timespec='microseconds') + '000Z' #example value 2020-07-13T08:54:53.619177000Z
+
+payload = {'adjustments': 'exchangeCorrection,manualCorrection', 'start': start_iso , 'count':15}
 
 try:
-    response = requests.get(pricing_url, headers={'Authorization': 'Bearer {}'.format(auth_obj['access_token'])}, params = payload)
+    response = requests.get(historical_pricing_url, headers={'Authorization': 'Bearer {}'.format(auth_obj['access_token'])}, params = payload)
 except Exception as exp:
 	print('Caught exception: %s' % str(exp))
 
 if response.status_code == 200:  # HTTP Status 'OK'
-    print('This is a Pricing data result from RDP API Call')
+    print('This is a Historical Pricing data result from RDP API Call')
     print(response.json())
+    #print(json.dumps(response.json(),sort_keys=True, indent=2, separators=(',', ':')))
 else:
     print('RDP APIs: Pricing data request failure: %s %s' % (response.status_code, response.reason))
     print('Text: %s' % (response.text))
+
 
 
 '''

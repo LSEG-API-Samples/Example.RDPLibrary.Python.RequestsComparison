@@ -1,5 +1,16 @@
+# |-----------------------------------------------------------------------------
+# |            This source code is provided under the Apache 2.0 license      --
+# |  and is provided AS IS with no warranty or guarantee of fit for purpose.  --
+# |                See the project's LICENSE.md for details.                  --
+# |           Copyright Refinitiv 2020. All rights reserved.                  --
+# |-----------------------------------------------------------------------------
+
+# |-----------------------------------------------------------------------------
+# |   Refinitiv Data Platform APIs direct call vs RDP ease-of-use libraries   --
+# |-----------------------------------------------------------------------------
+
 '''
-Both RDP APIs and RDP Library require the same RDP access credential, the username, password and App Key (client id).
+Both RDP APIs and RDP Libraries require the same RDP access credentials which are the username, password and App Key (client id).
 '''
 import json
 
@@ -19,7 +30,7 @@ session = rdp.open_platform_session(
         password = RDP_PASSWORD
     )
 )
-
+# -- Check Session Status
 print(session.get_open_state())
 
 # -- Close Session, just calls close_session() function
@@ -37,9 +48,9 @@ client_secret = ''
 RDP_version = "/v1"
 base_URL = "https://api.refinitiv.com"
 category_URL = "/auth/oauth2"
-endpoint_URL = "/token"
+service_endpoint_URL = "/token"
 
-auth_endpoint = base_URL + category_URL + RDP_version + endpoint_URL
+auth_endpoint = base_URL + category_URL + RDP_version + service_endpoint_URL #https://api.refinitiv.com/auth/oauth2/v1/token
 
 auth_obj = None
 response = None
@@ -74,9 +85,9 @@ close_request_msg = {
     'token': auth_obj['access_token']
 }
 
-endpoint_URL = "/revoke"
+service_endpoint_URL = "/revoke"
 
-revoke_endpoint = base_URL + category_URL + RDP_version + endpoint_URL
+revoke_endpoint = base_URL + category_URL + RDP_version + service_endpoint_URL #https://api.refinitiv.com/auth/oauth2/v1/revoke
 
 try:
     response = requests.post(revoke_endpoint, headers = {'Accept':'application/json'}, data = close_request_msg, auth = (APP_KEY,client_secret))
