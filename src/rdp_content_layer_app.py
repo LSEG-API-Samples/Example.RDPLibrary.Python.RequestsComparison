@@ -48,7 +48,7 @@ session = rdp.open_platform_session(
 
 # Request retrieve time series pricing events of yesterday for 15 rows of data.
 
-response = rdp.get_historical_price_events(
+response = rdp.HistoricalPricing.get_events(
     universe = universe, 
     eventTypes= rdp.EventTypes.TRADE,
     start = yesterday,  # timedelta(-1) : example value 2020-07-13T08:54:53.619177000Z
@@ -59,11 +59,14 @@ response = rdp.get_historical_price_events(
     ]
 )
 
+print('By default, the RDP Libraries Content Layer always returns data in as it own RDP data')
+print(type(response.data))
 
-print('This is a Historical Pricing result from RDP Libraries Function Layer')
-print(response)
-print('By default, the RDP Libraries Function Layer always returns data in DataFrame format')
-print(type(response))
+print('The application can get RDP Libraries Content Layer in JSON format with data.raw property')
+print(response.data.raw)
+
+print('The application can get RDP Libraries Content Layer in Dataframe format with data.df property')
+print(response.data.df)
 
 
 # --------------------------- RDP APIs Direct Call -------------------------------------
@@ -111,7 +114,8 @@ else:
 category_URL = '/data/historical-pricing'
 service_endpoint_URL = '/views/events'
 
-historical_pricing_url = base_URL + category_URL + RDP_version + service_endpoint_URL + '/' + universe #https://api.refinitiv.com/data/historical-pricing/v1/views/events/IBM.N
+historical_pricing_url = base_URL + category_URL + RDP_version + service_endpoint_URL + '/EUR=' #https://api.refinitiv.com/data/historical-pricing/v1/views/events/IBM.N
+
 
 payload = {'eventTypes':'trade','adjustments': 'exchangeCorrection,manualCorrection', 'start': start_iso , 'count':15}
 
@@ -131,7 +135,7 @@ else:
 
 
 '''
-The result shows that RDP Libraries Function Layer aims for data scientist/trade coder who want data in a "ready to use" format which is the Dataframe data type. Dataframe object lets them analyze data and plotting graph for data visualize easy in Jupyter Notebook Application. 
+The RDP Libraries Content Layer gives a richer and fuller content (such as metadata, etc) than the Function Layer. The Content Layer also provides content in various data type such as JSON and Dataframe to let developers choose from their business requirement.
 
 In the same time, the direct RDP APIs call return data as a JSON format which is more suitable for data processing or pass it to other system like GUI.
 '''

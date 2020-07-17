@@ -1,9 +1,9 @@
-# Comparing RDP Libraries for Python versus Python/requests direct call for Refinitiv Data Platform content
+# RDP Libraries for Python VS Python/requests direct call for Refinitiv Data Platform
 - version: 1.0
 - Last update: July 2020
 - Environment: Windows
 - Compiler: Python
-- Prerequisite: [Access to RDP/ERT in Cloud credentials](#prerequisite)
+- Prerequisite: [Access to RDP credentials](#prerequisite)
 
 ## Introduction
 
@@ -254,9 +254,39 @@ print(type(response))
 
 The Libraries simplify the HTTP request-response operations to be a single function call with set of helper types and enumerate variables for creating a query parameters. 
 
-Please note that the Function Layer returns data as Pandas's [DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html) object by default because the Layer is aims to run on Jupyter Notebook environment. 
+Please note that the Function Layer returns data as Pandas [DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html) object by default because the Layer is aims to run on Jupyter Notebook environment. 
 
-If developers want a full detail response from the platform or using Asynchronous/Event-Driven operating mode application, the RDP Libraries also provides the *Content Layer* for developers. Please see more detail regarding the Content Layer in [Discover our Refinitiv Data Platform Library (part 1) tutorial](https://developers.refinitiv.com/article/discover-our-upcoming-refinitiv-data-platform-library-part-1).
+#### RDP Libraries : Content Layer
+
+RDP Libraries *Content Layer* provides full detail response from the platform or using Asynchronous/Event-Driven operating mode application. The Content Layer interfaces are logical market data objects, largely representing financial items like level 1 market data prices and quotes,  Order Books, News, Historical Pricing, Company Research data and so on. 
+
+An example Content Layer interface is ```Historical Pricing``` that represents Time-Series data service. Developers can interact with this interface to get the  Historical Price data the same as Function Layer above but with more detail response. 
+
+Example Code:
+```
+# rdp.open_platform_session initialize call success
+
+response = rdp.HistoricalPricing.get_events(
+    universe = universe, 
+    start = timedelta(-1),  #example value 2020-07-13T08:54:53.619177000Z
+    count = 15,
+    adjustments = [
+        rdp.Adjustments.EXCHANGE_CORRECTION,
+        rdp.Adjustments.MANUAL_CORRECTION
+    ]
+)
+
+print('The application can get RDP Libraries Content Layer in JSON format with data.raw property')
+print(response.data.raw)
+
+print('The application can get RDP Libraries Content Layer in Dataframe format with data.df property')
+print(response.data.df)
+```
+
+The Content Layer interface is just a little complex than the Function Layer but it provides a response data in various type such as the raw data (JSON) and Dataframe. This Layer lets developers can use RDP Libraries in various environments and choose the best data type without need to manual convert the type in the application level.
+
+The Content Layer also supports more application operation modes such as Asynchronous/Event-Driven and also support the real-time Streaming requests for Level 1 Market Price data. Please see more detail regarding the Content Layer in [Discover our Refinitiv Data Platform Library (part 1) tutorial](https://developers.refinitiv.com/article/discover-our-upcoming-refinitiv-data-platform-library-part-1).
+
 
 ### RDP Libraries - Delivery Layer
 
@@ -348,9 +378,10 @@ This demo project requires the following dependencies softwares and libraries.
 ## <a id="files_list"></a>Application Files
 This example project contains the following files and folders
 1. *src/rdp_function_layer_app.py*: Demo application that shows the comparison between RDP Libraries Function Layer and Python/requests library.
-2. *src/rdp_delivery_layer_app.py*: Demo application that shows the comparison between RDP Libraries Delivery Layer and Python/requests library.
-3. LICENSE.md: Project's license file.
-4. README.md: Project's README file.
+2. *src/rdp_content_layer_app.py*: Demo application that shows the comparison between RDP Libraries Content Layer and Python/requests library.
+3. *src/rdp_delivery_layer_app.py*: Demo application that shows the comparison between RDP Libraries Delivery Layer and Python/requests library.
+4. LICENSE.md: Project's license file.
+5. README.md: Project's README file.
 
 ## <a id="how_to_run"></a>How to run the Comparison demo example in a console
 

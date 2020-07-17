@@ -156,3 +156,6 @@ else:
     print('Text: %s' % (response.text))
 
 
+'''
+The RDP Libraries Delivery Layer give developers easy way to make the HTTP request-response operation (and also the other delivery methods such as Stream/WebSockets), Queue  and Files).
+'''
