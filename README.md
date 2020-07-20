@@ -5,11 +5,11 @@
 - Compiler: Python
 - Prerequisite: [Access to RDP credentials](#prerequisite)
 
-## Introduction
+## <a id="introduction"></a>Introduction
 
-The [Refinitiv Data Platform (RDP) APIs](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-apis) provide various Refinitiv data and content for developers via easy to use Web base API. The consumers which are data scientist, financial coder or trader can use any programming languages that support HTTP request-response and JSON message to retrieve content from RDP in a straightforward way. An example use case are data scientists or trader use [Python language](https://www.python.org/) with the [requests library](https://requests.readthedocs.io/en/master/) to get data from RDP and visualize that data in [Jupyter Notebook](https://jupyter.org/) application.
+The [Refinitiv Data Platform (RDP) APIs](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-apis) provide various Refinitiv data and content for developers via easy to use Web base API. The developers which are data scientist, financial coder or trader can use any programming languages that support HTTP request-response and JSON message to retrieve content from RDP in a straightforward way. An example use case are data scientists or trader use [Python language](https://www.python.org/) with the [requests library](https://requests.readthedocs.io/en/master/) to get data from RDP and visualize that data in [Jupyter Notebook](https://jupyter.org/) application.
 
-The [Refinitiv Data Platform Libraries](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-libraries) are ease-of-use APIs defining a set of uniform interfaces providing the developer access to the Refinitiv Data Platform. It simplify the API interface that even easier than using RDP APIs with Python and requests library directly. 
+The [Refinitiv Data Platform Libraries](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-libraries) are ease-of-use APIs defining a set of uniform interfaces providing the developer access to the Refinitiv Data Platform. The libraries let developers can get data easier than using RDP APIs with Python and requests library directly. 
 
 This article demonstrates how easy developers can get Refinitiv content via RDP Libraries by comparing the application source code using RDP Libraries ```PlatformSession ``` versus the code using Python/requests to get the same data. The comparison also can be applied to developers who use other Python HTTP libraries such as [http.client](https://docs.python.org/3.7/library/http.client.html#module-http.client) or [urllib.request](https://docs.python.org/3.7/library/urllib.request.html#module-urllib.request).
 
@@ -45,7 +45,7 @@ Refinitiv Data Platform entitlement check is based on OAuth 2.0 specification. T
 
 Both RDP APIs and RDP Libraries PlatformSession applications require the above access credentials to initiate and authentication with the platform.
 
-### Direct RDP APIs Call
+### Direct RDP APIs call with Python/requests
 
 The application needs to send a HTTP Post message with the access credentials to RDP Auth Service endpoint ```https://api.refinitiv.com:443/auth/oauth2/v1/token``` (as of July 2020, the current version of RDP Auth Service is **v1**). 
 
@@ -141,7 +141,7 @@ The RDP Libraries application source code is simple and easy to read when compar
 
 Once the application success authenticates with RDP platform, the application can request data/content from the platform. 
 
-### Direct RDP APIs Call
+### Direct RDP APIs call with Python/requests
 
 When the application receives the Access Token (an authorization token) from RDP Auth Service, all subsequent REST API calls will use this token to get the data. The application needs to input Access Token via *Authorization* HTTP request message header as shown below. 
 - Header: 
@@ -184,7 +184,7 @@ else:
     print('Text: %s' % (response.text))
 ```
 
-The other example is RDP Business summary Service.
+The other example is RDP Business Summary Service which returns data for business summary of the specific RIC or permId.
 
 Example Code for Business summary Service:
 ```
@@ -217,7 +217,7 @@ The above code from two Services show that the main application logic is the sam
 
 ### RDP Libraries 
 
-With RDP Libraries, the application does not need to handle the Access Token information. The application just calls the Libraries interfaces to get data after init session success, the Libraries will manage the Session and authentication information for the application.
+With RDP Libraries, the application does not need to handle the Access Token information. The application just calls the Libraries interfaces to get data after session initialization success, the Libraries will manage the Session and authentication information for the application.
 
 RDP libraries offers 3 abstraction layers for supporting the largest audience of developers possible from Citizen developers to seasoned professionals:
 - Function: Highest level - single function call to get data
@@ -315,7 +315,7 @@ Please see more detail regarding how to use Delivery Layer Layer for various typ
 
 ## <a id="revoke_session"></a>Un-initialize and Revoke Authentication
 
-### Direct RDP APIs Call
+### Direct RDP APIs call with Python/requests
 
 The application needs to send the revoke request message to RDP Auth Service to revoke authorization of the Access Token.
 
@@ -358,11 +358,11 @@ print(session.get_open_state())
 
 With RDP Libraries, developers are not limited only Refinitiv Data Platform , but developers also can access to Refinitiv Desktop (Eikon or Refinitiv Workspace) and Deployed/Managed TREP infrastructure platforms with a the same set of API. Using the library you can access content from all 3 of the access points - all from within the same application if required. One example would be sourcing realtime streaming Pricing data from your TREP server as well as say historical pricing events from the cloud-based Refinitiv Data platform.
 
-## <a id="when_to_use_direct_call"></a>When should developers call for RDP APIs directly?
+## <a id="when_to_use_direct_call"></a>When should developers use RDP APIs direct call?
  
  If developers use the programming languages that currently not supported by RDP Libraries such as Java, C++, R, ..etc, they can use a basic HTTP request-response and JSON message features of those languages to get content from RDP APIs easily.
 
-The other case is the application has requirements to a manual control the HTTP status, connection detail and credentials information such as a server application, web application or GUI application. The direct call with any programming languages that supports JSON message and HTTP request-response are also suitable.
+The other case is the application has requirements to a manual control the HTTP status, connection detail or credentials information such as a server application, web application or GUI application. A direct call approach with any programming languages are also suitable.
 
 ## <a id="prerequisite"></a>Demo Applications Prerequisite
 This demo project requires the following dependencies softwares and libraries.
