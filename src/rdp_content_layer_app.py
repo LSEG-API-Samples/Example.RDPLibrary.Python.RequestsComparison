@@ -17,6 +17,10 @@ import json
 from datetime import datetime, timedelta
 from dateutil import tz
 
+import warnings
+warnings.filterwarnings('ignore')
+
+
 APP_KEY = ''
 RDP_LOGIN = ''
 RDP_PASSWORD = ''
@@ -36,37 +40,47 @@ start_iso = start.isoformat(timespec='microseconds') + '000Z' #example value 202
 import refinitiv.dataplatform as rdp
 
 # -- Init and Authenticate Session
-session = rdp.open_platform_session(
-    APP_KEY, 
-    rdp.GrantPassword(
-        username = RDP_LOGIN, 
-        password = RDP_PASSWORD
+
+try:
+    session = rdp.open_platform_session(
+        APP_KEY, 
+        rdp.GrantPassword(
+            username = RDP_LOGIN, 
+            password = RDP_PASSWORD
+        )
     )
-)
+    print('Session Status: ', session.get_open_state())
+except Exception as exp:
+	print('RDP Libraries: Initialize Session exception: %s' % str(exp))
 
 # ------------ Historical Pricing Data Request
 
 # Request retrieve time series pricing events of yesterday for 15 rows of data.
 
-response = rdp.HistoricalPricing.get_events(
-    universe = universe, 
-    eventTypes= rdp.EventTypes.TRADE,
-    start = yesterday,  # timedelta(-1) : example value 2020-07-13T08:54:53.619177000Z
-    count = 15,
-    adjustments = [
-        rdp.Adjustments.EXCHANGE_CORRECTION,
-        rdp.Adjustments.MANUAL_CORRECTION
-    ]
-)
+try:
+    response = rdp.HistoricalPricing.get_events(
+        universe = universe, 
+        eventTypes= rdp.EventTypes.TRADE,
+        start = yesterday,  # timedelta(-1) : example value 2020-07-13T08:54:53.619177000Z
+        count = 15,
+        adjustments = [
+            rdp.Adjustments.EXCHANGE_CORRECTION,
+            rdp.Adjustments.MANUAL_CORRECTION
+        ]
+    )
+except Exception as exp:
+	print('RDP Libraries: Content Layer exception: %s' % str(exp))
 
-print('By default, the RDP Libraries Content Layer always returns data in as it own RDP data')
-print(type(response.data))
 
-print('The application can get RDP Libraries Content Layer in JSON format with data.raw property')
-print(response.data.raw)
+if response is not None:
+    print('By default, the RDP Libraries Content Layer always returns data in as it own RDP data')
+    print(type(response.data))
 
-print('The application can get RDP Libraries Content Layer in Dataframe format with data.df property')
-print(response.data.df)
+    print('The application can get RDP Libraries Content Layer in JSON format with data.raw property')
+    print(response.data.raw)
+
+    print('The application can get RDP Libraries Content Layer in Dataframe format with data.df property')
+    print(response.data.df)
 
 
 # --------------------------- RDP APIs Direct Call -------------------------------------
@@ -114,7 +128,7 @@ else:
 category_URL = '/data/historical-pricing'
 service_endpoint_URL = '/views/events'
 
-historical_pricing_url = base_URL + category_URL + RDP_version + service_endpoint_URL + '/EUR=' #https://api.refinitiv.com/data/historical-pricing/v1/views/events/IBM.N
+historical_pricing_url = base_URL + category_URL + RDP_version + service_endpoint_URL + '/' + universe #https://api.refinitiv.com/data/historical-pricing/v1/views/events/IBM.N
 
 
 payload = {'eventTypes':'trade','adjustments': 'exchangeCorrection,manualCorrection', 'start': start_iso , 'count':15}

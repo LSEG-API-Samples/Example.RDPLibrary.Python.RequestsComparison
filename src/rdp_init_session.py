@@ -14,6 +14,9 @@ Both RDP APIs and RDP Libraries require the same RDP access credentials which ar
 '''
 import json
 
+import warnings
+warnings.filterwarnings('ignore')
+
 APP_KEY = ''
 RDP_LOGIN = ''
 RDP_PASSWORD = ''
@@ -22,20 +25,23 @@ RDP_PASSWORD = ''
 # --------------------------- RDP Library -------------------------------------------
 import refinitiv.dataplatform as rdp
 
-# -- Init and Authenticate Session
-session = rdp.open_platform_session(
-    APP_KEY, 
-    rdp.GrantPassword(
-        username = RDP_LOGIN, 
-        password = RDP_PASSWORD
+try:
+    # -- Init and Authenticate Session
+    session = rdp.open_platform_session(
+        APP_KEY, 
+        rdp.GrantPassword(
+            username = RDP_LOGIN, 
+            password = RDP_PASSWORD
+        )
     )
-)
-# -- Check Session Status
-print(session.get_open_state())
+    # -- Check Session Status
+    print(session.get_open_state())
 
-# -- Close Session, just calls close_session() function
-rdp.close_session()
-print(session.get_open_state())
+    # -- Close Session, just calls close_session() function
+    rdp.close_session()
+    print('Session Status: ', session.get_open_state())
+except Exception as exp:
+	print('Caught exception: %s' % str(exp))
 
 
 # --------------------------- RDP API Direct Call -------------------------------------

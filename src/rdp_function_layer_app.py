@@ -17,6 +17,10 @@ import json
 from datetime import datetime, timedelta
 from dateutil import tz
 
+import warnings
+warnings.filterwarnings('ignore')
+
+
 APP_KEY = ''
 RDP_LOGIN = ''
 RDP_PASSWORD = ''
@@ -36,34 +40,44 @@ start_iso = start.isoformat(timespec='microseconds') + '000Z' #example value 202
 import refinitiv.dataplatform as rdp
 
 # -- Init and Authenticate Session
-session = rdp.open_platform_session(
-    APP_KEY, 
-    rdp.GrantPassword(
-        username = RDP_LOGIN, 
-        password = RDP_PASSWORD
+
+try:
+    session = rdp.open_platform_session(
+        APP_KEY, 
+        rdp.GrantPassword(
+            username = RDP_LOGIN, 
+            password = RDP_PASSWORD
+        )
     )
-)
+    print('Session Status: ', session.get_open_state())
+except Exception as exp:
+	print('RDP Libraries: Initialize Session exception: %s' % str(exp))
+
 
 # ------------ Historical Pricing Data Request
 
 # Request retrieve time series pricing events of yesterday for 15 rows of data.
 
-response = rdp.get_historical_price_events(
-    universe = universe, 
-    eventTypes= rdp.EventTypes.TRADE,
-    start = yesterday,  # timedelta(-1) : example value 2020-07-13T08:54:53.619177000Z
-    count = 15,
-    adjustments = [
-        rdp.Adjustments.EXCHANGE_CORRECTION,
-        rdp.Adjustments.MANUAL_CORRECTION
-    ]
-)
+try:
+    response = rdp.get_historical_price_events(
+        universe = universe, 
+        eventTypes= rdp.EventTypes.TRADE,
+        start = yesterday,  # timedelta(-1) : example value 2020-07-13T08:54:53.619177000Z
+        count = 15,
+        adjustments = [
+            rdp.Adjustments.EXCHANGE_CORRECTION,
+            rdp.Adjustments.MANUAL_CORRECTION
+        ]
+    )
+except Exception as exp:
+	print('RDP Libraries: Function Layer exception: %s' % str(exp))
 
 
-print('This is a Historical Pricing result from RDP Libraries Function Layer')
-print(response)
-print('By default, the RDP Libraries Function Layer always returns data in DataFrame format')
-print(type(response))
+if response is not None:
+    print('This is a Historical Pricing result from RDP Libraries Function Layer')
+    print(response)
+    print('By default, the RDP Libraries Function Layer always returns data in Pandas DataFrame format')
+    print(type(response))
 
 
 # --------------------------- RDP APIs Direct Call -------------------------------------
@@ -131,7 +145,7 @@ else:
 
 
 '''
-The result shows that RDP Libraries Function Layer aims for data scientist/trade coder who want data in a "ready to use" format which is the Dataframe data type. Dataframe object lets them analyze data and plotting graph for data visualize easy in Jupyter Notebook Application. 
+The result shows that RDP Libraries Function Layer aims for data scientist/trade coder who want data in a "ready to use" format which is the Pandas Dataframe data type. Dataframe object lets them analyze data and plotting graph for data visualize easy in Jupyter Notebook Application. 
 
 In the same time, the direct RDP APIs call return data as a JSON format which is more suitable for data processing or pass it to other system like GUI.
 '''

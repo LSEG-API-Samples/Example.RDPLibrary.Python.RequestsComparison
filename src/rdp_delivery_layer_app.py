@@ -16,6 +16,9 @@ Both RDP APIs and RDP Libraries require the same RDP access credentials which ar
 
 import json
 
+import warnings
+warnings.filterwarnings('ignore')
+
 APP_KEY = ''
 RDP_LOGIN = ''
 RDP_PASSWORD = ''
@@ -25,21 +28,46 @@ universe = 'IBM.N'
 RDP_version = '/v1'
 base_URL = 'https://api.refinitiv.com'
 
+ipa_request_message ={
+  "fields": [ "InstrumentTag", "StartDate", "EndDate", "FxSpot", "FxSwapsCcy1Ccy2", "FxOutrightCcy1Ccy2" ],
+  "outputs": [ "Data", "Headers" ],
+  "universe": [
+    {
+      "instrumentType": "FxCross",
+      "instrumentDefinition": {
+        "instrumentTag": "FX_deal_001",
+        "fxCrossType": "FxForward",
+        "fxCrossCode": "EURGBP",
+        "legs": [ { "tenor": "3M10D" } ]
+      },
+      "pricingParameters": {
+        "valuationDate": "2019-02-02T00:00:00Z",
+        "priceSide": "Mid"
+      }
+    }
+  ]
+}
+
 # --------------------------- RDP Library -------------------------------------------
 
 import refinitiv.dataplatform as rdp
 
 # -- Init and Authenticate Session
 
-session = rdp.open_platform_session(
-    APP_KEY, 
-    rdp.GrantPassword(
-        username = RDP_LOGIN, 
-        password = RDP_PASSWORD
+try:
+    session = rdp.open_platform_session(
+        APP_KEY, 
+        rdp.GrantPassword(
+            username = RDP_LOGIN, 
+            password = RDP_PASSWORD
+        )
     )
-)
+    
+except Exception as exp:
+	print('RDP Libraries: Initialize Session exception: %s' % str(exp))
 
 print('RDP Library Platfrom Session Status = %s' % session.get_open_state())
+
 
 # -- Requesting ESG Data
 
@@ -47,11 +75,13 @@ category_URL = '/data/environmental-social-governance'
 service_endpoint_URL = '/views/scores-full'
 
 endpoint_url = base_URL + category_URL + RDP_version + service_endpoint_URL #https://api.refinitiv.com/data/environmental-social-governance/v1/views/scores-full
-
-endpoint = rdp.Endpoint(session, endpoint_url)
-response = endpoint.send_request( query_parameters = {'universe': universe} )
-print('This is a ESG data result from RDP library')
-print(response.data.raw)
+try:
+    endpoint = rdp.Endpoint(session, endpoint_url)
+    response = endpoint.send_request( query_parameters = {'universe': universe} )
+    print('This is a ESG data result from RDP library')
+    print(response.data.raw)
+except Exception as exp:
+	print('RDP Libraries: Delivery Layer exception: %s' % str(exp))
 
 print('\n')
 
@@ -61,11 +91,32 @@ category_URL = '/user-framework/mobile/overview-service'
 service_endpoint_URL = '/corp/business-summary'
 
 endpoint_url = base_URL + category_URL + RDP_version + service_endpoint_URL + '/' + universe #https://api.refinitiv.com/user-framework/mobile/overview-service/v1/corp/business-summary/IBM.N
-endpoint = rdp.Endpoint(session, endpoint_url)
-response = endpoint.send_request()
-print('This is a Business summary data result from RDP library')
-print(response.data.raw)
+try:
+    endpoint = rdp.Endpoint(session, endpoint_url)
+    response = endpoint.send_request()
+    print('This is a Business summary data result from RDP library')
+    print(response.data.raw)
+    print('\n')
+except Exception as exp:
+	print('RDP Libraries: Delivery Layer exception: %s' % str(exp))
+
 print('\n')
+
+# --- Requesting IPA Data: Financial contracts - FX Forward
+
+category_URL = '/data/quantitative-analytics'
+service_endpoint_URL = '/financial-contracts'
+
+endpoint_url = base_URL + category_URL + RDP_version + service_endpoint_URL  #https://api.refinitiv.com/data/quantitative-analytics/v1/financial-contracts
+
+try:
+    endpoint = rdp.Endpoint(session, endpoint_url)
+    response = endpoint.send_request( method = rdp.Endpoint.RequestMethod.POST, body_parameters  = ipa_request_message)
+    print('This is a IPA data result from RDP library')
+    print(response.data.raw)
+    print('\n')
+except Exception as exp:
+	print('RDP Libraries: Delivery Layer exception: %s' % str(exp))
 
 # --------------------------- RDP APIs Direct Call -------------------------------------
 
@@ -135,13 +186,12 @@ else:
 
 print('\n')
 
-# -- Business summary
+# --- Requesting  Business summary: Returns data for business summary of the specific ric or permId
 
-RDP_version = "/v1"
+RDP_version = '/v1'
 category_URL = '/user-framework/mobile/overview-service'
 service_endpoint_URL = '/corp/business-summary'
 business_summary_url = base_URL + category_URL + RDP_version + service_endpoint_URL + '/' + universe #https://api.refinitiv.com/user-framework/mobile/overview-service/v1/corp/business-summary/IBM.N
-
 
 try:
     response = requests.get(business_summary_url, headers={'Authorization': 'Bearer {}'.format(auth_obj['access_token'])})
@@ -153,6 +203,27 @@ if response.status_code == 200:  # HTTP Status 'OK'
     print(response.json())
 else:
     print('RDP APIs: Business summary data request failure: %s %s' % (response.status_code, response.reason))
+    print('Text: %s' % (response.text))
+
+print('\n')
+
+# -- Requesting  IPA: Financial contracts - FX Forward
+
+RDP_version = '/v1'
+category_URL = '/data/quantitative-analytics'
+service_endpoint_URL = '/financial-contracts'
+ipa_url = base_URL + category_URL + RDP_version + service_endpoint_URL  #https://api.refinitiv.com/data/quantitative-analytics/v1/financial-contracts
+
+try:
+    response = requests.post(ipa_url, headers = {'Content-Type':'application/json','Authorization': 'Bearer {}'.format(auth_obj['access_token'])}, data = json.dumps(ipa_request_message))
+except Exception as exp:
+	print('Caught exception: %s' % str(exp))
+
+if response.status_code == 200:  # HTTP Status 'OK'
+    print('This is a IPA data result from RDP API Call')
+    print(response.json())
+else:
+    print('RDP APIs: IPA data request failure: %s %s' % (response.status_code, response.reason))
     print('Text: %s' % (response.text))
 
 
