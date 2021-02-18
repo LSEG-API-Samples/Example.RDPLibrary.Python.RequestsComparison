@@ -430,7 +430,7 @@ The first step is unzip or download the example project folder into a directory 
     ``` 
 ## <a id="summary"></a>Summary
 
-The [Refinitiv Data Platform (RDP) Libraries](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-libraries) let developers rapid create the application to access Refinitiv Platform content with a few line of code that easy to understand and maintenance. Developers can focus on implement the business logic or analysis data without worry about the connection, authentication detail with the Refinitiv Platforms.
+The [Refinitiv Data Platform (RDP) Libraries](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries) let developers rapid create the application to access Refinitiv Platform content with a few line of code that easy to understand and maintenance. Developers can focus on implement the business logic or analysis data without worry about the connection, authentication detail with the Refinitiv Platforms.
 
 The Libraries also support a wide range of developers from casual coder, data scientists, professional trader to seasoned programmer via various layers and delivery modes. Any developers with any level of knowledge can pick the layer that suitable for them and start implement the application easily. 
 
