@@ -331,7 +331,7 @@ except Exception as exp:
 
 Even though developers interested in the content/services that not available in Function and Content Layers yet, developers can use the Delivery Layer to request that data from the platform with just a simple functions call without need to manual create a HTTP request message. 
 
-Please see more detail regarding how to use Delivery Layer Layer for various types of delivery modes as HTTP Post request and Streaming Level 2 Data in [Discover our Refinitiv Data Platform Library (part 2) tutorial](https://developers.refinitiv.com/article/discover-our-upcoming-refinitiv-data-platform-library-part-2-0).
+Please see more detail regarding how to use Delivery Layer Layer for various types of delivery modes as HTTP Post request and Streaming Level 2 Data in [Discover our Refinitiv Data Platform Library (part 2) tutorial](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-2).
 
 ## <a id="revoke_session"></a>Un-initialize and Revoke Authentication
 
