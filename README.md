@@ -1,15 +1,15 @@
 # Comparison of RDP Libraries for Python VS Python/requests direct call for Refinitiv Data Platform
-- version: 1.0
-- Last update: July 2020
+- version: 1.1
+- Last update: February 2021
 - Environment: Windows
 - Compiler: Python
 - Prerequisite: [Access to RDP credentials](#prerequisite)
 
 ## <a id="introduction"></a>Introduction
 
-The [Refinitiv Data Platform (RDP) APIs](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-apis) provide various Refinitiv data and content for developers via easy to use Web base API. The developers which are data scientist, financial coder or trader can use any programming languages that support HTTP request-response and JSON message to retrieve content from RDP in a straightforward way. An example use case are data scientists or trader use [Python language](https://www.python.org/) with the [requests library](https://requests.readthedocs.io/en/master/) to get data from RDP and visualize that data in [Jupyter Notebook](https://jupyter.org/) application.
+The [Refinitiv Data Platform (RDP) APIs](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis) provide various Refinitiv data and content for developers via easy to use Web base API. The developers which are data scientist, financial coder or trader can use any programming languages that support HTTP request-response and JSON message to retrieve content from RDP in a straightforward way. An example use case are data scientists or trader use [Python language](https://www.python.org/) with the [requests library](https://requests.readthedocs.io/en/master/) to get data from RDP and visualize that data in [Jupyter Notebook](https://jupyter.org/) application.
 
-The [Refinitiv Data Platform Libraries](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-libraries) are ease-of-use APIs defining a set of uniform interfaces providing the developer access to the Refinitiv Data Platform. The libraries let developers can get data easier than using RDP APIs with Python and requests library directly. 
+The [Refinitiv Data Platform Libraries](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries) are ease-of-use APIs defining a set of uniform interfaces providing the developer access to the Refinitiv Data Platform. The libraries let developers can get data easier than using RDP APIs with Python and requests library directly. 
 
 This article demonstrates how easy developers can get Refinitiv content via RDP Libraries by comparing the application source code using RDP Libraries ```PlatformSession ``` versus the code using Python/requests to get the same data. The comparison also can be applied to developers who use other Python HTTP libraries such as [http.client](https://docs.python.org/3.7/library/http.client.html#module-http.client) or [urllib.request](https://docs.python.org/3.7/library/urllib.request.html#module-urllib.request).
 
@@ -28,9 +28,9 @@ Using the library developers can access content from all 3 of the access points 
 - Community-based Edition: C#
 
 For more deep detail regarding the RDP Libraries, please refer to the following articles and tutorials:
-- [Developer Article: Discover our Refinitiv Data Platform Library part 1](https://developers.refinitiv.com/article/discover-our-upcoming-refinitiv-data-platform-library-part-1).
-- [Developer Article: Discover our Refinitiv Data Platform Library part 2](https://developers.refinitiv.com/article/discover-our-upcoming-refinitiv-data-platform-library-part-2-0).
-- [Refinitiv Data Platform Libraries Document: An Introduction page](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-libraries/docs?content=62446&type=documentation_item).
+- [Developer Article: Discover our Refinitiv Data Platform Library part 1](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-1).
+- [Developer Article: Discover our Refinitiv Data Platform Library part 2](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-2).
+- [Refinitiv Data Platform Libraries Document: An Introduction page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries/documentation).
 
 ### Disclaimer
 
@@ -45,7 +45,7 @@ Refinitiv Data Platform entitlement check is based on OAuth 2.0 specification. T
 
 Both RDP APIs and RDP Libraries PlatformSession applications require the above access credentials to initiate and authentication with the platform.
 
-Please contact your Refinitiv's representative to help you to access Refinitiv Data Platform credentials. You can generate/manage the AppKey from [AppKeyGenerator web site](https://emea1.apps.cp.thomsonreuters.com/apps/AppkeyGenerator) or AppKey Generator tool in Eikon Desktop/Refinitiv Workspace application. Other useful document to help developers get start with RDP account is [Getting Start with Refinitiv Data Platform article](https://developers.refinitiv.com/article/getting-start-refinitiv-data-platform).
+Please contact your Refinitiv's representative to help you to access Refinitiv Data Platform credentials. You can generate/manage the AppKey from [AppKeyGenerator web site](https://emea1.apps.cp.thomsonreuters.com/apps/AppkeyGenerator) or AppKey Generator tool in Eikon Desktop/Refinitiv Workspace application. Other useful document to help developers get start with RDP account is [Getting Start with Refinitiv Data Platform article](https://developers.refinitiv.com/en/article-catalog/article/getting-start-with-refinitiv-data-platform).
 
 ### Direct RDP APIs call with Python/requests
 
@@ -58,9 +58,9 @@ A successful authentication response message from RDP Auth Service contains the 
 - **scope**: A list of all the scopes this token can be used with.
 
 For the full detail and explanation of RDP Authentication process application workflow, please refer to the following RDP APIS tutorials:
-- [Introduction to the Request-Response API](https://developers.refinitiv.com/requestresponse-apis/learning?content=38560&type=learning_material_item).
-- [Authorization - All about tokens](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-apis/learning?content=38562&type=learning_material_item).
-- [Authorization in Python](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-apis/learning?content=39322&type=learning_material_item).
+- [Introduction to the Request-Response API](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials#introduction-to-the-request-response-api).
+- [Authorization - All about tokens](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials#authorization-all-about-tokens).
+- [Authorization in Python](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials#authorization-in-python).
 
 Example Code with Python request library:
 ```
@@ -114,8 +114,8 @@ However, the RDP Libraries give developers the easiest way to authenticates with
 
 With RDP Libraries, the first thing the application needs to do is create a **Session** with the following logical connection points based on how the application intend to access the platform. The session is an interface to a specific access channel and is responsible for defining authentication details, managing connection resources, and implementing the necessary protocol to manage the life cycle of the session. The list of supported connection points are following:
 - DesktopSession (Eikon/Refinitiv Workspace)
-- PlatformSession (RDP, ERT in Cloud)
-- DeployedPlatformSession (deployed Elektron enterprise platform -TREP/ADS)
+- PlatformSession (RDP, Refinitiv Real-Time Optimized)
+- DeployedPlatformSession (deployed Refinitiv Real-Time/ADS)
 
 Lets focus on the PlatformSession session which requires the same RDP access credentials as a direct call to RDP APIs.
 
@@ -299,7 +299,7 @@ if response is not None:
 
 The Content Layer interface is just a little bit complex than the Function Layer but it is still just one function call. This Layer provides a response data in various type such as the raw data (JSON) and Pandas Dataframe. Developers can choose the best data type that match their requirement without need to manual convert the type in the application level.
 
-The Content Layer also supports more application operation modes such as Asynchronous/Event-Driven and also support the real-time Streaming requests for Level 1 Market Price data. Please see more detail regarding the Content Layer in [Discover our Refinitiv Data Platform Library (part 1) tutorial](https://developers.refinitiv.com/article/discover-our-upcoming-refinitiv-data-platform-library-part-1).
+The Content Layer also supports more application operation modes such as Asynchronous/Event-Driven and also support the real-time Streaming requests for Level 1 Market Price data. Please see more detail regarding the Content Layer in [Discover our Refinitiv Data Platform Library (part 1) tutorial](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-1).
 
 
 ### RDP Libraries - Delivery Layer
@@ -385,8 +385,8 @@ With RDP Libraries, developers are not limited only Refinitiv Data Platform , bu
 The other case is developers need to manual control all operations between the application and the platform such as HTTP status/connection handler, credentials and session management, etc (example:  server application, web application or GUI application). A manual HTTP request-response operations with Refinitiv Data Platform APIs are still simple and easy to implement. 
 
 For more detail regarding RDP APIs, please refer to the following resources:
-- [Refinitiv Data Platform APIs Quick Start page](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-apis/quick-start)
-- [Refinitiv Data Platform APIs Tutorial page](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-apis/learning)
+- [Refinitiv Data Platform APIs Quick Start page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/quick-start)
+- [Refinitiv Data Platform APIs Tutorial page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials)
 
 
 ## <a id="prerequisite"></a>Demo Applications Prerequisite
@@ -448,13 +448,13 @@ In the meantime, RDP APIs let developers manual control the connection, authenti
 
 ## <a id="references"></a>References
 For further details, please check out the following resources:
-* [Refinitiv Data Platform Libraries page](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-libraries) on the [Refinitiv Developer Community](https://developers.refinitiv.com/) web site.
-* [Refinitiv Data Platform APIs page](https://developers.refinitiv.com/refinitiv-data-platform).
+* [Refinitiv Data Platform Libraries page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries) on the [Refinitiv Developer Community](https://developers.refinitiv.com/) web site.
+* [Refinitiv Data Platform APIs page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis).
 * [Refinitiv Data Platform APIs Gateway page](https://api.refinitiv.com).
-* [Developer Article: Discover our Refinitiv Data Platform Library part 1](https://developers.refinitiv.com/article/discover-our-upcoming-refinitiv-data-platform-library-part-1).
-* [Developer Article: Discover our Refinitiv Data Platform Library part 2](https://developers.refinitiv.com/article/discover-our-upcoming-refinitiv-data-platform-library-part-2-0).
-* [Refinitiv Data Platform Libraries Document: An Introduction page](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-libraries/docs?content=62446&type=documentation_item).
-* [Refinitiv Data Platform Libraries: Delivery Layer Tutorial page](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-libraries/learning?content=52250&type=learning_material_item).
-* [Refinitiv Data Platform Libraries Quick Start page](https://developers.refinitiv.com/refinitiv-data-platform/refinitiv-data-platform-libraries/quick-start).
+* [Developer Article: Discover our Refinitiv Data Platform Library part 1](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-1).
+* [Developer Article: Discover our Refinitiv Data Platform Library part 2](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-2).
+* [Refinitiv Data Platform Libraries Document: An Introduction page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries/documentation).
+* [Refinitiv Data Platform Libraries: Delivery Layer Tutorial page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries/tutorials#introduction).
+* [Refinitiv Data Platform Libraries Quick Start page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries/quick-start).
 
 For any question related to Refinitiv Data Platform or Refinitiv Data Platform Libraries, please use the Developers Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/231/index.html).
