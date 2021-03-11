@@ -1,6 +1,6 @@
 # Comparison of RDP Libraries for Python VS Python/requests direct call for Refinitiv Data Platform
 - version: 1.1
-- Last update: February 2021
+- Last update: March 2021
 - Environment: Windows
 - Compiler: Python
 - Prerequisite: [Access to RDP credentials](#prerequisite)
@@ -52,8 +52,8 @@ Please contact your Refinitiv's representative to help you to access Refinitiv D
 The application needs to send a HTTP Post message with the access credentials to RDP Auth Service endpoint ```https://api.refinitiv.com:443/auth/oauth2/v1/token``` (as of July 2020, the current version of RDP Auth Service is **v1**). 
 
 A successful authentication response message from RDP Auth Service contains the following parameters:
-- **access_token**: The token used to invoke REST data API calls as described above. Application must keeps this credential for further RDP/ERT in Cloud request.
-- **refresh_token**: Refresh token to be used for obtaining an updated access token before expiration. Application must keeps this credential for access token renewal.
+- **access_token**: The token used to invoke REST data API calls as described above. The application must keep this credential for further RDP/Refinitiv Real-Time - Optimized requests.
+- **refresh_token**: Refresh token to be used for obtaining an updated access token before expiration. The application must keep this credential for access token renewal.
 - **expires_in**: Access token validity time in seconds.
 - **scope**: A list of all the scopes this token can be used with.
 
@@ -376,7 +376,7 @@ print(session.get_open_state())
 
 ## <a id="rdp_benefit"></a>Other benefits of using RDP Libraries
 
-With RDP Libraries, developers are not limited only Refinitiv Data Platform , but developers also can access to Refinitiv Desktop (Eikon or Refinitiv Workspace) and Deployed/Managed TREP infrastructure platforms with a the same set of API. Using the library you can access content from all 3 of the access points - all from within the same application if required. One example would be sourcing realtime streaming Pricing data from your TREP server as well as say historical pricing events from the cloud-based Refinitiv Data platform.
+With RDP Libraries, developers are not limited only to the Refinitiv Data Platform, but developers also can access Refinitiv Desktop (Eikon or Refinitiv Workspace) and Deployed/Managed Refinitiv Real-Time Distribution System infrastructure platforms with the same set of API. Using the library you can access content from all 3 of the access points - all from within the same application if required. One example would be sourcing real-time streaming Pricing data from your Refinitiv Real-Time Distribution System server as well as say historical pricing events from the cloud-based Refinitiv Data platform.
 
 ## <a id="when_to_use_direct_call"></a>Finally, when should developers use RDP APIs direct call?
  
@@ -390,7 +390,7 @@ For more detail regarding RDP APIs, please refer to the following resources:
 
 
 ## <a id="prerequisite"></a>Demo Applications Prerequisite
-This demo project requires the following dependencies softwares and libraries.
+This demo project requires the following dependencies software and libraries.
 1. RDP Access credentials.
 2. [Python](https://www.python.org/) compiler and runtime.
 3. [Refinitiv Data Platform Libraries for Python](https://pypi.org/project/refinitiv-dataplatform/) library.
