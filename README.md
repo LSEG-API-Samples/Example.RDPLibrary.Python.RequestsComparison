@@ -1,36 +1,35 @@
 # Comparison of RDP Libraries for Python VS Python/requests direct call for Refinitiv Data Platform
-- version: 1.1
-- Last update: March 2021
+- version: 1.5
+- Last update: February 2025
 - Environment: Windows
 - Compiler: Python
 - Prerequisite: [Access to RDP credentials](#prerequisite)
 
 ## <a id="introduction"></a>Introduction
 
-The [Refinitiv Data Platform (RDP) APIs](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis) provide various Refinitiv data and content for developers via easy to use Web base API. The developers which are data scientist, financial coder or trader can use any programming languages that support HTTP request-response and JSON message to retrieve content from RDP in a straightforward way. An example use case are data scientists or trader use [Python language](https://www.python.org/) with the [requests library](https://requests.readthedocs.io/en/master/) to get data from RDP and visualize that data in [Jupyter Notebook](https://jupyter.org/) application.
+**Update February 2025**: The Data Platform Libraries is outdated. There is a new and improve [LSEG Data Library for Python](https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python) (aka Data Library version 2) available now.
 
-The [Refinitiv Data Platform Libraries](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries) are ease-of-use APIs defining a set of uniform interfaces providing the developer access to the Refinitiv Data Platform. The libraries let developers can get data easier than using RDP APIs with Python and requests library directly. 
+The [Delivery Platform (RDP) APIs](https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis) (formerly known as Refinitiv Data Platform) provide various LSEG data and content for developers via easy to use Web base API. The developers which are data scientist, financial coder or trader can use any programming languages that support HTTP request-response and JSON message to retrieve content from RDP in a straightforward way. An example use case are data scientists or trader use [Python language](https://www.python.org/) with the [requests library](https://requests.readthedocs.io/en/master/) to get data from RDP and visualize that data in [Jupyter Notebook](https://jupyter.org/) application.
 
-This article demonstrates how easy developers can get Refinitiv content via RDP Libraries by comparing the application source code using RDP Libraries ```PlatformSession ``` versus the code using Python/requests to get the same data. The comparison also can be applied to developers who use other Python HTTP libraries such as [http.client](https://docs.python.org/3.7/library/http.client.html#module-http.client) or [urllib.request](https://docs.python.org/3.7/library/urllib.request.html#module-urllib.request).
+The [Data Platform Libraries](https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries) are ease-of-use APIs defining a set of uniform interfaces providing the developer access to the RDP. The libraries let developers can get data easier than using RDP APIs with Python and requests library directly. 
+
+This article demonstrates how easy developers can get LSEG content via RDP Libraries by comparing the application source code using RDP Libraries ```PlatformSession ``` versus the code using Python/requests to get the same data. The comparison also can be applied to developers who use other Python HTTP libraries such as [http.client](https://docs.python.org/3.7/library/http.client.html#module-http.client) or [urllib.request](https://docs.python.org/3.7/library/urllib.request.html#module-urllib.request).
 
 Note: This article is focusing on **the comparison of how to get data** only. The reason is once the application receives data from either direct RDP APIs call or RDP Libraries, the data processing or visualize logic are the same.
 
-## <a id="rdp_libs"></a>What is Refinitiv Data Platform (RDP) Libraries?
 
-Refinitiv provides wide range of contents and data which require multiple technologies, delivery mechanisms, data formats and also the multiple APIs to access each content. The RDP Libraries are suite of ease-of-use interfaces providing unified access to streaming and non-streaming data services offered within the Refinitiv Data Platform (RDP). The Libraries simplified how to access data to various delivery modes such as Request Response, Streaming, Bulk File and Queues via a single library. 
+## <a id="rdp_libs"></a>What is Data Platform (RDP) Libraries?
+
+**Update January 2025**: This project uses Data Platform Libraries, which is the **beta** version of the Python library. The strategic and improved [LSEG Data Library for Python](https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python) is version 2. Please find more detail on the [Essential Guide to the Data Libraries](https://developers.lseg.com/en/article-catalog/article/essential-guide-to-the-data-libraries) article.
+
+LSEG provides wide range of contents and data which require multiple technologies, delivery mechanisms, data formats and also the multiple APIs to access each content. The RDP Libraries are suite of ease-of-use interfaces providing unified access to streaming and non-streaming data services offered within the Delivery Platform (RDP). The Libraries simplified how to access data to various delivery modes such as Request Response, Streaming, Bulk File and Queues via a single library. 
 
 Depending on the level of service and data requirements, developers can easily choose how to access data services using the appropriate access channel defined within the library.
 
 ![Figure-1](images/rdp_libraries_1.png "RDP Libraries Diagram") 
 
-Using the library developers can access content from all 3 of the access points - all from within the same application if required. The RDP Libraries are available in the following programming languages:
-- Refinitiv Supported Editions: Python and TypeScript/JavaScript (coming in 2020)
-- Community-based Edition: C#
+Using the library developers can access content from all 3 of the access points - all from within the same application if required. 
 
-For more deep detail regarding the RDP Libraries, please refer to the following articles and tutorials:
-- [Developer Article: Discover our Refinitiv Data Platform Library part 1](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-1).
-- [Developer Article: Discover our Refinitiv Data Platform Library part 2](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-2).
-- [Refinitiv Data Platform Libraries Document: An Introduction page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries/documentation).
 
 ### Disclaimer
 
@@ -45,25 +44,26 @@ Refinitiv Data Platform entitlement check is based on OAuth 2.0 specification. T
 
 Both RDP APIs and RDP Libraries PlatformSession applications require the above access credentials to initiate and authentication with the platform.
 
-Please contact your Refinitiv's representative to help you to access Refinitiv Data Platform credentials. You can generate/manage the AppKey from [AppKeyGenerator web site](https://emea1.apps.cp.thomsonreuters.com/apps/AppkeyGenerator) or AppKey Generator tool in Eikon Desktop/Refinitiv Workspace application. Other useful document to help developers get start with RDP account is [Getting Start with Refinitiv Data Platform article](https://developers.refinitiv.com/en/article-catalog/article/getting-start-with-refinitiv-data-platform).
+Please contact your LSEG's representative to help you to access RDP credentials. You can generate/manage the AppKey from [AppKeyGenerator web site](https://amers1-apps.platform.refinitiv.com/apps/AppkeyGenerator) or AppKey Generator tool in Workspace application. Other useful document to help developers get start with RDP account is [Getting Start with Data Platform article](https://developers.lseg.com/en/article-catalog/article/getting-start-with-refinitiv-data-platform).
 
 ### Direct RDP APIs call with Python/requests
 
 The application needs to send a HTTP Post message with the access credentials to RDP Auth Service endpoint ```https://api.refinitiv.com:443/auth/oauth2/v1/token``` (as of July 2020, the current version of RDP Auth Service is **v1**). 
 
 A successful authentication response message from RDP Auth Service contains the following parameters:
-- **access_token**: The token used to invoke REST data API calls as described above. The application must keep this credential for further RDP/Refinitiv Real-Time - Optimized requests.
+- **access_token**: The token used to invoke REST data API calls as described above. The application must keep this credential for further RDP/Real-Time - Optimized requests.
 - **refresh_token**: Refresh token to be used for obtaining an updated access token before expiration. The application must keep this credential for access token renewal.
 - **expires_in**: Access token validity time in seconds.
 - **scope**: A list of all the scopes this token can be used with.
 
 For the full detail and explanation of RDP Authentication process application workflow, please refer to the following RDP APIS tutorials:
-- [Introduction to the Request-Response API](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials#introduction-to-the-request-response-api).
-- [Authorization - All about tokens](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials#authorization-all-about-tokens).
-- [Authorization in Python](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials#authorization-in-python).
+- [Introduction to the Request-Response API](https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials#introduction-to-the-request-response-api).
+- [Authorization - All about tokens](https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials#authorization-all-about-tokens).
+- [Authorization in Python](https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials#authorization-in-python).
 
 Example Code with Python request library:
-```
+
+```python
 import json
 import requests
 
@@ -113,14 +113,15 @@ However, the RDP Libraries give developers the easiest way to authenticates with
 ### RDP Libraries
 
 With RDP Libraries, the first thing the application needs to do is create a **Session** with the following logical connection points based on how the application intend to access the platform. The session is an interface to a specific access channel and is responsible for defining authentication details, managing connection resources, and implementing the necessary protocol to manage the life cycle of the session. The list of supported connection points are following:
-- DesktopSession (Eikon/Refinitiv Workspace)
-- PlatformSession (RDP, Refinitiv Real-Time Optimized)
-- DeployedPlatformSession (deployed Refinitiv Real-Time/ADS)
+- DesktopSession ( Workspace)
+- PlatformSession (RDP, Real-Time Optimized)
+- DeployedPlatformSession (deployed Real-Time/ADS)
 
 Lets focus on the PlatformSession session which requires the same RDP access credentials as a direct call to RDP APIs.
 
 Example Code:
-```
+python
+```python
 import refinitiv.dataplatform as rdp
 
 # -- Init and Authenticate Session
@@ -153,12 +154,13 @@ When the application receives the Access Token (an authorization token) from RDP
 
 Please notice *the space* between the ```Bearer``` and ```RDP Access Token``` values.
 
-The application then creates a request message in a JSON message format or URL query parameter based on interested service and send it as a HTTP request message to the Service Endpoint. Developers can get RDP APIs the Service Endpoint, HTTP operations and parameters from Refinitiv Data Platform's [API Playground page](https://api.refinitiv.com/) - which an interactive documentation site developers can access once they have a valid Refinitiv Data Platform account.
+The application then creates a request message in a JSON message format or URL query parameter based on interested service and send it as a HTTP request message to the Service Endpoint. Developers can get RDP APIs the Service Endpoint, HTTP operations and parameters from Refinitiv Data Platform's [API Playground page](https://apidocs.refinitiv.com/Apps/ApiDocs) - which an interactive documentation site developers can access once they have a valid Refinitiv Data Platform account.
 
 The first example is requesting data from RDP Historical-Pricing Service. 
 
 Example Code for RDP Historical-Pricing Service:
-```
+
+```python
 # Authentication success with Access Token in auth_obj['access_token']
 
 RDP_version = '/v1'
@@ -191,7 +193,8 @@ else:
 The other example is RDP Business Summary Service which returns data for business summary of the specific RIC or permId.
 
 Example Code for Business summary Service:
-```
+
+```python
 # Authentication success with RDP Auth Service Access Token in auth_obj['access_token']
 
 # -- Business summary
@@ -237,7 +240,8 @@ The RDP Libraries *Function Layer* provides the easiest to the most commonly use
 Let see the RDP Libraries code that request the same Historical-Pricing data.
 
 Example Code for RDP Historical-Pricing Service:
-```
+
+```python
 # rdp.open_platform_session initialize call success
 
 try:
@@ -272,7 +276,8 @@ RDP Libraries *Content Layer* provides full detail response from the platform or
 An example Content Layer interface is ```Historical Pricing``` that represents Time-Series data service. Developers can interact with this interface to get the  Historical Price data the same as Function Layer above but with more detail response. 
 
 Example Code:
-```
+
+```python
 # rdp.open_platform_session initialize call success
 
 try:
@@ -299,20 +304,21 @@ if response is not None:
 
 The Content Layer interface is just a little bit complex than the Function Layer but it is still just one function call. This Layer provides a response data in various type such as the raw data (JSON) and Pandas Dataframe. Developers can choose the best data type that match their requirement without need to manual convert the type in the application level.
 
-The Content Layer also supports more application operation modes such as Asynchronous/Event-Driven and also support the real-time Streaming requests for Level 1 Market Price data. Please see more detail regarding the Content Layer in [Discover our Refinitiv Data Platform Library (part 1) tutorial](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-1).
+The Content Layer also supports more application operation modes such as Asynchronous/Event-Driven and also support the real-time Streaming requests for Level 1 Market Price data. Please see more detail regarding the Content Layer in [Discover our Refinitiv Data Platform Library (part 1) tutorial](https://developers.lseg.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-1).
 
 
 ### RDP Libraries - Delivery Layer
 
-Refinitiv is developing the library and hope to offer Function and Content Layers support for other data content such as Environmental, Social and Governance (ESG) data, Fundamentals and so on. In the meantime, the Libraries also let developers access to a wide range of content that not available in Function and Content Layers yet with the *Delivery Layer*. 
+LSEG is developing the library and hope to offer Function and Content Layers support for other data content such as Environmental, Social and Governance (ESG) data, Fundamentals and so on. In the meantime, the Libraries also let developers access to a wide range of content that not available in Function and Content Layers yet with the *Delivery Layer*. 
 
-The Delivery Layer supports Request (HTTP Request/Response), Stream (WebSockets), Queue (Alerts) and Files (bulk) delivery modes of the Refinitiv Data Platform. Developers can use Delivery Layer interfaces to explicitly specify their own resource, so long as that resource is available from the selected access channel. It is the lowest abstraction layer that targets developers who need specific features that are not offered by other higher level abstraction layers (Content & Function Layers).
+The Delivery Layer supports Request (HTTP Request/Response), Stream (WebSockets), Queue (Alerts) and Files (bulk) delivery modes of the RDP. Developers can use Delivery Layer interfaces to explicitly specify their own resource, so long as that resource is available from the selected access channel. It is the lowest abstraction layer that targets developers who need specific features that are not offered by other higher level abstraction layers (Content & Function Layers).
 
-Developers can get Service Endpoint and Request parameters information of the interested Service from the [API Playground page](https://api.refinitiv.com/), then use the Delivery Layer interface to request data with a few functions call.
+Developers can get Service Endpoint and Request parameters information of the interested Service from the [API Playground page](https://apidocs.refinitiv.com/Apps/ApiDocs), then use the Delivery Layer interface to request data with a few functions call.
 
 
 Example Code for Business summary Service:
-```
+
+```python
 # rdp.open_platform_session initialize call success
 
 category_URL = '/user-framework/mobile/overview-service'
@@ -331,7 +337,7 @@ except Exception as exp:
 
 Even though developers interested in the content/services that not available in Function and Content Layers yet, developers can use the Delivery Layer to request that data from the platform with just a simple functions call without need to manual create a HTTP request message. 
 
-Please see more detail regarding how to use Delivery Layer Layer for various types of delivery modes as HTTP Post request and Streaming Level 2 Data in [Discover our Refinitiv Data Platform Library (part 2) tutorial](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-2).
+Please see more detail regarding how to use Delivery Layer Layer for various types of delivery modes as HTTP Post request and Streaming Level 2 Data in [Discover our Refinitiv Data Platform Library (part 2) tutorial](https://developers.lseg.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-2).
 
 ## <a id="revoke_session"></a>Un-initialize and Revoke Authentication
 
@@ -340,7 +346,8 @@ Please see more detail regarding how to use Delivery Layer Layer for various typ
 The application needs to send the revoke request message to RDP Auth Service to revoke authorization of the Access Token.
 
 Example Code:
-```
+
+```python
 # -- Close Session, sending revoke access token request 
 close_request_msg = {
     'token': auth_obj['access_token']
@@ -368,7 +375,8 @@ else:
 The application just calls RDP Libraries ```close_session()``` function to close the current Session.
 
 Example Code:
-```
+
+```python
 # -- Close Session, just calls close_session() function
 rdp.close_session()
 print(session.get_open_state())
@@ -376,17 +384,17 @@ print(session.get_open_state())
 
 ## <a id="rdp_benefit"></a>Other benefits of using RDP Libraries
 
-With RDP Libraries, developers are not limited only to the Refinitiv Data Platform, but developers also can access Refinitiv Desktop (Eikon or Refinitiv Workspace) and Deployed/Managed Refinitiv Real-Time Distribution System infrastructure platforms with the same set of API. Using the library you can access content from all 3 of the access points - all from within the same application if required. One example would be sourcing real-time streaming Pricing data from your Refinitiv Real-Time Distribution System server as well as say historical pricing events from the cloud-based Refinitiv Data platform.
+With RDP Libraries, developers are not limited only to the RDP, but developers also can access the Workspace desktop application and Deployed/Managed Real-Time Distribution System (RTDS) infrastructure platforms with the same set of API. Using the library you can access content from all 3 of the access points - all from within the same application if required. One example would be sourcing real-time streaming Pricing data from your RTDS server as well as say historical pricing events from the cloud-based Delivery platform.
 
 ## <a id="when_to_use_direct_call"></a>Finally, when should developers use RDP APIs direct call?
  
  If developers use the programming languages that currently not supported by RDP ease-of-use Libraries such as Java, C++, R, ..etc, they can use a basic HTTP request-response and JSON message features of those languages to get content from RDP APIs easily.
 
-The other case is developers need to manual control all operations between the application and the platform such as HTTP status/connection handler, credentials and session management, etc (example:  server application, web application or GUI application). A manual HTTP request-response operations with Refinitiv Data Platform APIs are still simple and easy to implement. 
+The other case is developers need to manual control all operations between the application and the platform such as HTTP status/connection handler, credentials and session management, etc (example:  server application, web application or GUI application). A manual HTTP request-response operations with Delivery Platform APIs are still simple and easy to implement. 
 
 For more detail regarding RDP APIs, please refer to the following resources:
-- [Refinitiv Data Platform APIs Quick Start page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/quick-start)
-- [Refinitiv Data Platform APIs Tutorial page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials)
+- [RDP APIs Quick Start page](https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/quick-start)
+- [RDP APIs Tutorial page](https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/tutorials)
 
 
 ## <a id="prerequisite"></a>Demo Applications Prerequisite
@@ -396,7 +404,7 @@ This demo project requires the following dependencies software and libraries.
 3. [Refinitiv Data Platform Libraries for Python](https://pypi.org/project/refinitiv-dataplatform/) library.
 4. Internet connection
 
-Please contact your Refinitiv's representative to help you to access Refinitiv Data Platform credentials.
+Please contact your LSEG's representative to help you to access RDP credentials.
 
 *Note:* 
 - The Python example has been qualified with Python versions 3.7.7. 
@@ -430,31 +438,29 @@ The first step is unzip or download the example project folder into a directory 
     ``` 
 ## <a id="summary"></a>Summary
 
-The [Refinitiv Data Platform (RDP) Libraries](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries) let developers rapid create the application to access Refinitiv Platform content with a few line of code that easy to understand and maintenance. Developers can focus on implement the business logic or analysis data without worry about the connection, authentication detail with the Refinitiv Platforms.
+The [Delivery Platform (RDP) Libraries](https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries) let developers rapid create the application to access LSEG Platform content with a few line of code that easy to understand and maintenance. Developers can focus on implement the business logic or analysis data without worry about the connection, authentication detail with the LSEG Platforms.
 
 The Libraries also support a wide range of developers from casual coder, data scientists, professional trader to seasoned programmer via various layers and delivery modes. Any developers with any level of knowledge can pick the layer that suitable for them and start implement the application easily. 
 
-In the meantime, RDP APIs let developers manual control the connection, authentication and session logic to retrieve Refinitiv content via a simple Cloud Delivery Web Based API. 
+In the meantime, RDP APIs let developers manual control the connection, authentication and session logic to retrieve LSEG content via a simple Cloud Delivery Web Based API. 
 
-### RDP Libraries Advantage
+### The Data Library Advantage
+
 1. Use a few line of code to manage and retrieve data.
-2. Support all Refinitiv platforms: Desktop, Cloud-based and Deployed infrastructure.
+2. Support all LSEG platforms: Desktop, Cloud-based and Deployed infrastructure.
 3. Providers a set of helper types and enumerate variables to create query message quickly.
 4. The Libraries manage the connection, credentials and session operations for developers. No need to manual control them in the application level.
-5. The Libraries keeps expanding functionalities to support new Services by Refinitiv.
+5. The Libraries keeps expanding functionalities to support new Services by LSEG.
 
 ### RDP Libraries Disadvantages 
 1. Support Python, .Net and TypeScript/JavaScript technologies only. 
 
 ## <a id="references"></a>References
-For further details, please check out the following resources:
-* [Refinitiv Data Platform Libraries page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries) on the [Refinitiv Developer Community](https://developers.refinitiv.com/) web site.
-* [Refinitiv Data Platform APIs page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis).
-* [Refinitiv Data Platform APIs Gateway page](https://api.refinitiv.com).
-* [Developer Article: Discover our Refinitiv Data Platform Library part 1](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-1).
-* [Developer Article: Discover our Refinitiv Data Platform Library part 2](https://developers.refinitiv.com/en/article-catalog/article/discover-our-refinitiv-data-platform-library-part-2).
-* [Refinitiv Data Platform Libraries Document: An Introduction page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries/documentation).
-* [Refinitiv Data Platform Libraries: Delivery Layer Tutorial page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries/tutorials#introduction).
-* [Refinitiv Data Platform Libraries Quick Start page](https://developers.refinitiv.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-libraries/quick-start).
 
-For any question related to Refinitiv Data Platform or Refinitiv Data Platform Libraries, please use the Developers Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/231/index.html).
+For further details, please check out the following resources:
+
+- [LSEG Data Library for Python](https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python) on the [LSEG Developer Community](https://developers.lseg.com/) website.
+- [RDP APIs page](https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis).
+- [RDP APIs document page](https://apidocs.refinitiv.com/Apps/ApiDocs).
+
+For any question related to the products on this page, please use the Developers Community [Q&A Forum](https://community.developers.refinitiv.com).
