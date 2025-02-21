@@ -7,7 +7,7 @@
 
 ## <a id="introduction"></a>Introduction
 
-**Update February 2025**: The Data Platform Libraries is outdated. There is a new and improve [LSEG Data Library for Python](https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python) (aka Data Library version 2) available now.
+**Update February 2025**: The Data Platform Libraries and this project are outdated. There is a new and improve [LSEG Data Library for Python](https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python) (aka Data Library version 2) available now. Please see the updated project with the strategic LSEG Data Library on [Example.DataLibrary.Python.RequestsComparison](https://github.com/LSEG-API-Samples/Example.DataLibrary.Python.RequestsComparison) repository.
 
 The [Delivery Platform (RDP) APIs](https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis) (formerly known as Refinitiv Data Platform) provide various LSEG data and content for developers via easy to use Web base API. The developers which are data scientist, financial coder or trader can use any programming languages that support HTTP request-response and JSON message to retrieve content from RDP in a straightforward way. An example use case are data scientists or trader use [Python language](https://www.python.org/) with the [requests library](https://requests.readthedocs.io/en/master/) to get data from RDP and visualize that data in [Jupyter Notebook](https://jupyter.org/) application.
 
@@ -37,7 +37,8 @@ As these articles are based on alpha version 1.0.0.a0 of the Python library, the
 
 ## <a id="authen"></a>Initialize and Authentication
 
-Refinitiv Data Platform entitlement check is based on OAuth 2.0 specification. The first step of an application work flow is to get a token, which will allow access to the protected resource, i.e. data REST API's. The API requires the following access credential information:
+RDP APIs entitlement check is based on OAuth 2.0 specification. The first step of an application work flow is to get a token, which will allow access to the protected resource, i.e. data REST API's. The API requires the following access credential information:
+
 - Username: The username. 
 - Password: Password associated with the username. .
 - Client ID: This is also known as ```AppKey```, and it is generated using an Appkey Generator. This unique identifier is defined for the user or application and is deemed confidential (not shared between users). The client_id parameter can be passed in the request body or as an “Authorization” request header that is encoded as base64.
